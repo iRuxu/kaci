@@ -14,7 +14,8 @@ module.exports = {
 
     //本地服务配置
     server: {
-        reload: true //是否自动刷新
+        reload: true, //是否自动刷新
+        open:false, //是否自动打开
     },
 
     //构建选项
@@ -77,22 +78,15 @@ module.exports = {
                 },
                 compress: false, //是否压缩
                 minifier: {
-                    removeComments: true, //移除注释
-                    collapseWhitespace: true, //移除无效空格
-                    collapseBooleanAttributes: true,
-                    removeAttributeQuotes: true,
-                    removeRedundantAttributes: true,
-                    removeEmptyAttributes: true,
-                    removeScriptTypeAttributes: true,
-                    removeStyleLinkTypeAttributes: true,
-                    removeOptionalTags: true
+                    removeComments: false, //移除注释
+                    collapseWhitespace: false //移除无效空格
                 } //https://github.com/kangax/html-minifier#options-quick-reference
             },
             img: {
-                ignore: ["module/*", "include/*"] //忽略被处理（临时文件）
+                ignore: ["temp/*"] //忽略被处理（临时文件）
             },
             data: {
-                ignore: ["module/*", "include/*"] //忽略被处理（本地测试数据）
+                ignore: ["temp/*"] //忽略被处理（本地测试数据）
             }
         },
         //默认build方案
@@ -109,11 +103,11 @@ module.exports = {
             },
             url: {
                 //线上路径（仅hbs中有效）
-                __: "http://www.iruxu.com/",
-                __css: "http://cdn.iruxu.com/css/",
-                __js: "http://cdn.iruxu.com/js/",
-                __img: "http://cdn.iruxu.com/img/",
-                __data: "http://data.iruxu.com/",
+                __: "./",
+                __css: "./static/css/",
+                __js: "./static/js/",
+                __img: "./static/img/",
+                __data: "./data/",
                 __title:"Demo"
             },
             js: {

@@ -155,7 +155,7 @@ gulp.task("script", function() {
 });
 
 //img task
-const imgmin = require("gulp-imagemin");
+//const imgmin = require("gulp-imagemin");
 gulp.task("img", function() {
     //忽略临时图片文件
     let ignore_files = [];
@@ -212,7 +212,7 @@ gulp.task("server", ["default"], function() {
     //https://browsersync.io/docs/options
     let server_config = {
         notify: false,
-        open: false,
+        open: CONF.server.open,
         server: {
             baseDir: LOCALHOST,
             directory: true

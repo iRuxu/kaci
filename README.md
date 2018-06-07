@@ -62,7 +62,8 @@ module.exports = {
 
     //本地服务配置
     server: {
-        reload: true    //true自动刷新,false关闭自动刷新
+        reload: true,    //true自动刷新,false关闭自动刷新
+        open:false,     //是否自动打开
     },
 
     //构建选项
