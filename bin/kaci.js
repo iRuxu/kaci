@@ -22,6 +22,7 @@ let __root = (file) => path.join(process.cwd(),file)
 let __warn = chalk.redBright
 let __tip = chalk.yellowBright
 let __echo = chalk.cyanBright
+let __help = chalk.magentaBright
 
 //欢迎信息
 console.log(
@@ -36,6 +37,13 @@ console.log(
     `ver ${kaciconf.version}`
 );
 console.log(__tip(`${symbols.flower}\0\0${__dirname}`));
+console.log(
+    __echo(
+        symbols.plane +
+            " ------------------------------------------------------" +
+            symbols.heart
+    )
+);
 
 //初始化命令
 cmd.command('init')
@@ -67,12 +75,14 @@ let fail_tips = function (){
      
 //启动服务
 cmd.command('start')
+    .option('-p,--port <n>','指定本地服务端口')
     .description('启动本地服务')
     .action(function (cmd){
+        let port = cmd.opts().port
         //读取kaci.config.js中模式启动对应服务
         try{
             let conf = require(__root('kaci.config.js'));
-            _start[conf.mode]()
+            _start[conf.mode](port)
         }catch(e){
             fail_tips()
         }
@@ -83,11 +93,11 @@ cmd.command('build')
     .option('-m,--mode <mode>','指定build模式')
     .description('构建发布项目')
     .action(function (cmd){
-        let buildmode = cmd.opts().mode
+        let build_mode = cmd.opts().mode
         //读取kaci.config.js中模式构建应用
         try{
             let conf = require(__root('kaci.config.js'));
-            _build[conf.mode](buildmode)
+            _build[conf.mode](build_mode)
         }catch(e){
             fail_tips()
         }
@@ -105,12 +115,3 @@ if(process.argv.length<=2){
 
 //解析命令
 cmd.parse(process.argv)
-
-//尾分割线
-console.log(
-    __echo(
-        symbols.plane +
-            " ------------------------------------------------------" +
-            symbols.heart
-    )
-);

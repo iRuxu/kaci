@@ -12,15 +12,14 @@ module.exports = {
         data: "src/data"
     },
 
-    //本地设置项
+    //本地服务配置
     server: {
-        port:512,  //端口
         reload: true //是否自动刷新
     },
 
     //构建选项
     build: {
-        //本地预览方案
+        //本地server方案（localhost预览）
         default: {
             ignore: ["temp/*"], //忽略被监听（相对srcPath.root）
             path: {
@@ -96,9 +95,9 @@ module.exports = {
                 ignore: ["module/*", "include/*"] //忽略被处理（本地测试数据）
             }
         },
-        //线上部署
+        //默认build方案
         production: {
-            ignore: ["temp/*"], //忽略被监听（相对srcPath.root）
+            ignore: ["temp/*"], //忽略被监听与处理（相对source.root）
             path: {
                 //输出路径
                 root: "build",
@@ -109,12 +108,13 @@ module.exports = {
                 data: "build/data"
             },
             url: {
-                //线上路径
+                //线上路径（仅hbs中有效）
                 __: "http://www.iruxu.com/",
                 __css: "http://cdn.iruxu.com/css/",
                 __js: "http://cdn.iruxu.com/js/",
                 __img: "http://cdn.iruxu.com/img/",
-                __data: "http://data.iruxu.com/"
+                __data: "http://data.iruxu.com/",
+                __title:"Demo"
             },
             js: {
                 ignore: ["module/*", "include/*"], //忽略被编译（子模块）
@@ -166,10 +166,10 @@ module.exports = {
                 } //https://github.com/kangax/html-minifier#options-quick-reference
             },
             img: {
-                ignore: ["module/*", "include/*"] //忽略被处理（临时文件）
+                ignore: ["temp/*"] //忽略被处理（临时文件）
             },
             data: {
-                ignore: ["module/*", "include/*"] //忽略被处理（本地测试数据）
+                ignore: ["temp/*"] //忽略被处理（本地测试数据）
             }
         },
         //测试服务器部署 
