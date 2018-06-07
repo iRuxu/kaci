@@ -1,6 +1,6 @@
 {
   "_from": "kaci",
-  "_id": "kaci@0.0.5",
+  "_id": "kaci@0.0.4",
   "_inBundle": false,
   "_integrity": "sha512-WdJzO+BkT6FbtmPh1Zqs9kwRwVPznAZ0z0HaM73ddfGKMjlEf4kAkgDifHHKz4e0ToekPAq18Odbi/N4Klhz0w==",
   "_location": "/kaci",
@@ -61,8 +61,7 @@
     "url": "git+https://github.com/iRuxu/kaci.git"
   },
   "scripts": {
-    "start": "node ./lib/app.js",
     "test": "node ./test/index.js"
   },
-  "version": "0.0.4"
+  "version": "0.0.5"
 }
