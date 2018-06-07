@@ -1,8 +1,8 @@
 # KACI
 
-基于 Gulp & webpack 的前端构建方案，懒人 0 配置。
+基于 Gulp & webpack 的前端构建方案，懒人 "0" 配置。
 
-## Install
+## *Install*
 
 使用 npm 安装，也可以使用 cnpm 或 yarn 安装。
 
@@ -10,7 +10,7 @@
 npm install -g kaci
 ```
 
-## Usage
+## *Usage*
 
 #### **1.初始化项目**
 
@@ -104,7 +104,7 @@ module.exports = {
                 __data: "http://data.iruxu.com/",
                 __title:"Demo"
             },
-            //js文件的配置项
+            //js配置
             js: {
                 ignore: ["module/*", "include/*"], //忽略不被编译的子模块
                 babel: {...},  //babel编译选项
@@ -112,6 +112,7 @@ module.exports = {
                 compress: true, //是否压缩
                 sourcemap: true //是否生成sourcemap
             },
+            //css配置
             css: {
                 ignore: ["module/*", "include/*"], //忽略不被编译的子模块
                 less: {...}, //less编译选项
@@ -120,6 +121,7 @@ module.exports = {
                 compress: true, //是否压缩
                 sourcemap: false //是否生成sourcemap
             },
+            //html配置
             html: {
                 ignore: ["module/*", "include/*"], //忽略处理（局部模块不需要被编译、临时页面）
                 handlebars: {
@@ -128,9 +130,11 @@ module.exports = {
                 compress: true, //是否压缩
                 minifier: {...} //html压缩选项
             },
+            //图片配置
             img: {
                 ignore: ["temp/*"] //忽略被处理（临时文件）
             },
+            //数据配置
             data: {
                 ignore: ["temp/*"] //忽略被处理（本地测试数据）
             }
