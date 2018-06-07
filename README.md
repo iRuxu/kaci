@@ -1,19 +1,14 @@
 # KACI
-
 基于 Gulp & webpack 的前端构建方案，懒人 "0" 配置。
 
 ## *Install*
-
 使用 npm 安装，也可以使用 cnpm 或 yarn 安装。
-
 ```
 npm install -g kaci
 ```
 
 ## *Usage*
-
 #### **1.初始化项目**
-
 ```
 kaci init           //默认方式：gulp
 ```
@@ -22,7 +17,6 @@ kaci init           //默认方式：gulp
 你也指定为其它构建框架，例如 webpack 等。（_暂时只添加了 gulp_）
 
 #### **2.启动本地服务**
-
 ```
 kaci start          //默认端口：512
 kaci start -p 8080
@@ -33,7 +27,6 @@ kaci start -p 8080
 其中本地服务的构建使用 kaci.config.js 中*build.default*的配置。
 
 #### **3.打包发布项目**
-
 ```
 kaci build          //默认方案：production
 kaci build -m preview
@@ -43,13 +36,11 @@ kaci build -m preview
 你可以在 build 下创建其它方案名，例如"preview"用于测试服务器，你只需要执行命令"kaci build -m preview"，则会以其配置重新 build 至新的目录。（你可以指定任意名称，除"default"与"production"）
 
 #### **4.获取更多帮助**
-
 ```
 kaci help
 ```
 
 ## 配置 kaci.config.js
-
 默认已经为你生成一份 demo，你可以根据自己的需要修改它。  
 **注意：当修改配置文件后，需要重新启动命令才能生效。**
 
