@@ -12,10 +12,11 @@ const symbols = require('../lib/include/symbols.js');
 const kaciconf = require('../package.json');
 
 //方法模块
-let _init = require('../lib/init.js');
-let _start = require('../lib/start.js');
-let _build = require('../lib/build.js');
-let _help = require('../lib/help.js');
+//所有require进来模块 都可以用const定义。 
+const _init = require('../lib/init.js');
+const _start = require('../lib/start.js');
+const _build = require('../lib/build.js');
+const _help = require('../lib/help.js');
 
 //本地函数
 let __root = (file) => path.join(process.cwd(),file)
@@ -23,6 +24,8 @@ let __warn = chalk.redBright
 let __tip = chalk.yellowBright
 let __echo = chalk.cyanBright
 let __help = chalk.magentaBright
+
+const _conf = require(__root('kaci.config.js'));
 
 //欢迎信息
 console.log(
@@ -50,16 +53,32 @@ cmd.command('init')
     .option('-g,--gulp','初始化gulp前端项目')
     .option('-w,--webpack','初始化webpack前端项目')
     .description('初始化项目')
-    .action(function (cmd){
-        if(process.argv.length<=3){
-            _init[mode[0]]()
-        }else{
-            for(let i=0,len=mode.length;i<len;i++){
-                if(!cmd.opts()[mode[i]]) continue
-                _init[mode[i]]()
-            }
+    .action(function (argvs){
+        if(argvs.gulp){
+            _init.gulp()
+            return
         }
+        if(argvs.webpack){
+            init.webpack()
+            return
+        }
+        console.warn("非法参数")
     })
+
+/*
+cmd.command('init')
+    .option('-t,--tool <value>', `指定初始化工具类型，可选:${mode.join(",")}`)
+    .description('初始化项目')
+    .action(function (argvs){
+       if(!argvs.tool){
+            return console.warn("请指定工具类型")
+       }
+       if(!_init[argvs.tool]){
+            return console.log(`暂不支持工具类型${argvs.tool}`)
+       }
+    })
+
+*/
 
 let fail_tips = function (){
     console.log(
@@ -92,12 +111,16 @@ cmd.command('start')
 cmd.command('build')
     .option('-m,--mode <mode>','指定build模式')
     .description('构建发布项目')
-    .action(function (cmd){
-        let build_mode = cmd.opts().mode
+    .action(function (program){
+        //let build_mode = cmd.opts().mode  //尽量把局部变量 cmd 和 全局变量 cmd 用不同的单词，以免混淆
+       
+         let build_mode = program.mode
         //读取kaci.config.js中模式构建应用
         try{
-            let conf = require(__root('kaci.config.js'));
-            _build[conf.mode](build_mode)
+            //既然加载是确定的，应该把下面这一行移到文件头部
+            //let conf = require(__root('kaci.config.js'));
+           // _build[conf.mode](build_mode)
+            _build[_conf.mode](build_mode)
         }catch(e){
             fail_tips()
         }
