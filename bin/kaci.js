@@ -62,7 +62,7 @@ cmd.command('build')
             let conf = get_localconf()
             _build[conf.tool](scheme)
         }catch(e){
-            echo('error','未找到kaci.config.js配置文件,或指定的方案不存在')
+            echo('error','未找到kaci.config.js配置文件,请使用kaci init初始化')
         }
     })
 

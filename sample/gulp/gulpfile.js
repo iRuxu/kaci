@@ -1,15 +1,9 @@
 //Dependencies==========================================
 
-//public dependencies
 const path = require("path");
 let __path = path.join;
 const fs = require("fs");
-const chalk = require("chalk");
-let __warn = chalk.redBright;
-let __tip = chalk.yellowBright;
-let __ok = chalk.greenBright;
 
-//local dependencies
 const gulp = require("gulp");
 const gulpif = require("gulp-if");
 const cache = require("gulp-cached");
@@ -17,19 +11,21 @@ const remember = require("gulp-remember");
 const run = require('run-sequence');
 
 const rename = require("gulp-rename");
-const concatfile = require("gulp-concat");
+const concat = require("gulp-concat");
 const del = require("del");
 const sourcemaps = require("gulp-sourcemaps");
 const browserSync = require("browser-sync").create();
+const lodash = require("lodash");
 
 //Config================================================
 
 //base
-const CONF = require("./kaci.config.js")
+const CONF = require("./kaci.config.js");
 const LOCALHOST = CONF.build.default.path.root;
 
 //scheme
-var SCHEME = CONF.build.default;
+const DEFAULT = CONF.build.default
+var SCHEME;
 
 //source
 let SRC = CONF.source.root;
@@ -45,6 +41,7 @@ let SRC_DATA = CONF.source.data;
 const htmlmin = require("gulp-htmlmin");
 const handlebars = require("gulp-compile-handlebars");
 gulp.task("template", function() {
+
     //忽略被处理的模板文件
     let ignore_files = [];
     SCHEME.html.ignore.forEach(function(name, i) {
@@ -68,9 +65,7 @@ gulp.task("template", function() {
             .pipe(cache("template"))
             //TODO: 合并css、js模块
             //compress
-            .pipe(
-                gulpif(SCHEME.html.compress, htmlmin(SCHEME.html.minifier))
-            )
+            .pipe(gulpif(SCHEME.html.compress, htmlmin(SCHEME.html.minifier)))
             //output
             .pipe(remember("template"))
             .pipe(gulp.dest(SCHEME.path.html));
@@ -155,7 +150,6 @@ gulp.task("script", function() {
 });
 
 //img task
-//const imgmin = require("gulp-imagemin");
 gulp.task("img", function() {
     //忽略临时图片文件
     let ignore_files = [];
@@ -165,7 +159,7 @@ gulp.task("img", function() {
     //打包图片
     gulp.src([__path(SRC_IMG, "**/*"), ...ignore_files])
         .pipe(cache("img"))
-        //TODO:雪碧图、优化
+        //TODO:雪碧图、图片压缩优化
         //output
         .pipe(remember("img"))
         .pipe(gulp.dest(SCHEME.path.img));
@@ -181,11 +175,7 @@ gulp.task("data", function() {
     });
     //打包验证数据文件
     let json_reporter = function(file) {
-        console.log(
-            __warn(`JSON文件错误：`),
-            __tip(`${file.path}`),
-            __warn(`请检查双引号、逗号、分号`)
-        );
+        console.error(`JSON文件错误：${file.path}，请检查双引号、逗号、分号`)
     };
     gulp.src([__path(SRC_DATA, "**/*"), ...ignore_files])
         .pipe(cache("data"))
@@ -203,13 +193,14 @@ gulp.task("default", ["template", "style", "script", "img", "data"]);
 //Event Task===================================================
 
 //server
-gulp.task("server", ["default"], function() {
-
+gulp.task("server", function() {
     //获取当前指定端口
-    let custom_port = process.argv[3].slice(2)
-
+    let custom_port = parseInt(Math.abs(process.argv[3].slice(2)))
+    if(isNaN(custom_port)){
+        console.error('\u00d7\0\0error : 指定的端口必须为一个整数')
+        return
+    }
     //添加本地服务
-    //https://browsersync.io/docs/options
     let server_config = {
         notify: false,
         open: CONF.server.open,
@@ -220,6 +211,7 @@ gulp.task("server", ["default"], function() {
         port: custom_port
     };
     browserSync.init(server_config);
+    console.log('\u2714\0\0success : 本地服务运行中..')
 });
 
 //reload
@@ -228,41 +220,45 @@ gulp.task("reload", function() {
 });
 
 //start
-gulp.task("start", ["server"], function() {
-    //监察文件
+gulp.task("start", function() {
+
+    //设置本地服务方案
+    SCHEME = DEFAULT; 
+
+    //执行默认任务与启动本地服务
+    run('default','server')
+
+    //忽略不被监听的文件
     let watch_files = __path(SRC, "**/*");
     let ignore_files = [];
     SCHEME.ignore.forEach(function(name, i) {
         ignore_files.push("!" + __path(SRC, name));
     });
-    //是否自动刷新
+
+    //监听与自动刷新
     let start_task = ["default"];
     CONF.server.reload && start_task.push("reload");
     gulp.watch([watch_files, ...ignore_files], start_task);
-    console.log(__ok('\u2714\0\0success : 本地服务运行中..'))
+
 });
 
-//build -> 默认production方案
+//build
 gulp.task("build", function() {
 
-    //获取当前build模式
-    let build_mode = process.argv[3].slice(2)
-
-    try{
-        //重设scheme指向
-        SCHEME = CONF.build[build_mode]
-
-        //清空build目录
-        let del_files = SCHEME.path.root + '/**'
-        del.sync([del_files])
-
-        //重新打包
-        run('default')
-        console.log(__ok('\u2714\0\0success : 打包完成'))
-
-    }catch(e){
-        //有可能执行了一个不存在的模式
-        console.log(__warn('\u2718\0\0fail : 指定的build模式不存在或未配置'))
+    //重设scheme指向
+    let current_scheme = process.argv[3].slice(2)
+    if(!CONF.build[current_scheme]){
+        console.error('\u00d7\0\0error : 指定的build方案不存在，请检查kaci.config.js中build配置项')
+        return
     }
+    SCHEME = lodash.merge(DEFAULT,CONF.build[current_scheme])
+
+    //清空打包目录
+    let del_files = SCHEME.path.root + '/**'
+    del.sync([del_files])
+
+    //重新打包
+    run('default')
+    console.log('\u2714\0\0success : build 完成 =>',__path(__dirname,SCHEME.path.root))
 
 });

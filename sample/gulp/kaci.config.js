@@ -77,10 +77,7 @@ module.exports = {
                     batch: ["./src/template/module"] //hbs子模块目录
                 },
                 compress: false, //是否压缩
-                minifier: {
-                    removeComments: false, //移除注释
-                    collapseWhitespace: false //移除无效空格
-                } //https://github.com/kangax/html-minifier#options-quick-reference
+                minifier: {} //https://github.com/kangax/html-minifier#options-quick-reference
             },
             img: {
                 ignore: ["temp/*"] //忽略被处理（临时文件）
@@ -91,7 +88,6 @@ module.exports = {
         },
         //默认build方案
         production: {
-            ignore: ["temp/*"], //忽略被监听与处理（相对source.root）
             path: {
                 //输出路径
                 root: "build",
@@ -111,41 +107,13 @@ module.exports = {
                 __title:"Demo"
             },
             js: {
-                ignore: ["module/*", "include/*"], //忽略被编译（子模块）
-                babel: {
-                    //https://babeljs.io/docs/usage/api/#options
-                    presets: ["env", "react"],
-                    plugins: []
-                },
-                typescript: {
-                    //https://www.tslang.cn/docs/handbook/compiler-options.html
-                    lib: ["DOM", "ES2015"], //编译lib
-                    target: "ES3", //编译目标ES版本 ES5,ES6,ES2015,ES2016,ES2017,ESNext
-                    alwaysStrict: true
-                },
                 compress: true, //是否压缩
                 sourcemap: true //是否生成sourcemap
             },
             css: {
-                ignore: ["module/*", "include/*"], //忽略被编译（子模块）
-                less: {}, //http://lesscss.org/usage/#less-options
-                sass: {}, //https://www.npmjs.com/package/node-sass
-                autoprefixer: {
-                    //前缀处理
-                    browsers: ["defaults"] //https://github.com/browserslist/browserslist#queries
-                },
                 compress: true, //是否压缩
-                clean: {
-                    //兼容性
-                    compatibility: "ie8" //https://github.com/jakubpawlowicz/clean-css#constructor-options
-                },
-                sourcemap: false //是否生成sourcemap
             },
             html: {
-                ignore: ["module/*", "include/*"], //忽略处理（局部模块不需要被编译、临时页面）
-                handlebars: {
-                    batch: ["./src/template/module"] //hbs子模块目录
-                },
                 compress: true, //是否压缩
                 minifier: {
                     removeComments: true, //移除注释
@@ -157,18 +125,30 @@ module.exports = {
                     removeScriptTypeAttributes: true,
                     removeStyleLinkTypeAttributes: true,
                     removeOptionalTags: true
-                } //https://github.com/kangax/html-minifier#options-quick-reference
-            },
-            img: {
-                ignore: ["temp/*"] //忽略被处理（临时文件）
-            },
-            data: {
-                ignore: ["temp/*"] //忽略被处理（本地测试数据）
+                }
             }
         },
-        //测试服务器部署 
-        //定义更多的模式，使用kaci build $mode(此处定义名称) 即可使用对应模式构建项目
+        //自定义方案
+        //使用kaci build -s $scheme(此处定义的名称) 即可使用对应模式构建项目
         preview: {
+            path: {
+                //输出路径
+                root: "preview",
+                html: "preview",
+                css: "preview/static/css",
+                js: "preview/static/js",
+                img: "preview/static/img",
+                data: "preview/data"
+            },
+            url: {
+                //线上路径（仅hbs中有效）
+                __: "./",
+                __css: "./static/css/",
+                __js: "./static/js/",
+                __img: "./static/img/",
+                __data: "./data/",
+                __title:"Demo"
+            }
         }
     }
 };
