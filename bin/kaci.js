@@ -18,7 +18,6 @@ const _help = require('../lib/help.js');
 
 //本地函数
 let get_localconf = () =>  require(path.join(process.cwd(),'kaci.config.js'))
-let tip_fail = () => echo('error','未找到kaci.config.js配置文件,请使用kaci init初始化')
 
 //欢迎信息
 echo('hi',`${info.name.toUpperCase()}`,`ver ${info.version}`)
@@ -48,7 +47,7 @@ cmd.command('start')
             let conf = get_localconf()
             _start[conf.tool](port)
         }catch(e){
-            tip_fail()
+            echo('error','未找到kaci.config.js配置文件,请使用kaci init初始化')
         }
     })
 
@@ -63,7 +62,7 @@ cmd.command('build')
             let conf = get_localconf()
             _build[conf.tool](scheme)
         }catch(e){
-            tip_fail()
+            echo('error','未找到kaci.config.js配置文件,或指定的方案不存在')
         }
     })
 

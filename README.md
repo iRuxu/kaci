@@ -2,7 +2,6 @@
 整合 Gulp & webpack 的前端构建方案，懒人 "0" 配置。
 
 ## _功能_
----
 + typescript
 + babel
 + less
@@ -12,9 +11,6 @@
 
 
 ## _安装_
-
----
-
 使用 npm 安装，也可以使用 cnpm 或 yarn 安装。
 
 ```
@@ -22,9 +18,6 @@ npm install -g kaci
 ```
 
 ## _使用_
-
----
-
 #### **1.初始化项目**
 
 ```
@@ -64,9 +57,6 @@ kaci help
 ```
 
 ## 配置文件 kaci.config.js
-
----
-
 **注意：当修改配置文件后，需要重新启动命令才能生效。**
 
 ```javascript
