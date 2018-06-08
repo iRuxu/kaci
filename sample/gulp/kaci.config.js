@@ -1,5 +1,5 @@
 module.exports = {
-    //当前构建模式
+    //当前构建工具
     tool: "gulp",
 
     //源文件路径
@@ -23,8 +23,8 @@ module.exports = {
         //本地server方案（localhost预览）
         default: {
             ignore: ["temp/*"], //忽略被监听（相对srcPath.root）
+            //输出路径
             path: {
-                //输出路径
                 root: "dist",
                 html: "dist/template",
                 css: "dist/css",
@@ -32,14 +32,15 @@ module.exports = {
                 img: "dist/img",
                 data: "dist/data"
             },
+            //用于hbs模板渲染的全局变量、可根据不同build方案定义不同的地址
             url: {
-                //hbs中解析的全局路径
                 __: "./",
                 __css: "../css/",
                 __js: "../js/",
                 __img: "../img/",
                 __data: "../data/"
             },
+            //js配置
             js: {
                 ignore: ["module/*", "include/*"], //忽略被编译（子模块）
                 babel: {
@@ -56,6 +57,7 @@ module.exports = {
                 compress: false, //是否压缩
                 sourcemap: false //是否生成sourcemap
             },
+            //css配置
             css: {
                 ignore: ["module/*", "include/*"], //忽略被编译（子模块）
                 less: {}, //http://lesscss.org/usage/#less-options
@@ -71,6 +73,7 @@ module.exports = {
                 },
                 sourcemap: false //是否生成sourcemap
             },
+            //html配置
             html: {
                 ignore: ["module/*", "include/*"], //忽略处理（局部模块不需要被编译、临时页面）
                 handlebars: {
@@ -80,16 +83,16 @@ module.exports = {
                 minifier: {} //https://github.com/kangax/html-minifier#options-quick-reference
             },
             img: {
-                ignore: ["temp/*"] //忽略被处理（临时文件）
+                ignore: ["psd/*"] //忽略被处理（psd源文件等）
             },
             data: {
-                ignore: ["temp/*"] //忽略被处理（本地测试数据）
+                ignore: ["_bak/*"] //忽略被处理（备用数据）
             }
         },
         //默认build方案
         production: {
+            //输出路径
             path: {
-                //输出路径
                 root: "build",
                 html: "build",
                 css: "build/static/css",
@@ -97,22 +100,25 @@ module.exports = {
                 img: "build/static/img",
                 data: "build/data"
             },
+            //可能的线上路径（仅对hbs文件有效）
             url: {
-                //线上路径（仅hbs中有效）
                 __: "./",
                 __css: "./static/css/",
                 __js: "./static/js/",
                 __img: "./static/img/",
                 __data: "./data/",
-                __title:"Demo"
+                __title: "Demo"
             },
+            //js压缩
             js: {
                 compress: true, //是否压缩
                 sourcemap: true //是否生成sourcemap
             },
+            //css压缩
             css: {
                 compress: true, //是否压缩
             },
+            //html压缩
             html: {
                 compress: true, //是否压缩
                 minifier: {
@@ -126,29 +132,18 @@ module.exports = {
                     removeStyleLinkTypeAttributes: true,
                     removeOptionalTags: true
                 }
+            },
+            img: {
+                ignore: ["psd/*","temp/*"] //忽略被处理（psd源文件、本地测试图片等）
+            },
+            data: {
+                ignore: ["_bak/*","temp/*"] //忽略被处理（本地测试数据等）
             }
         },
         //自定义方案
         //使用kaci build -s $scheme(此处定义的名称) 即可使用对应模式构建项目
         preview: {
-            path: {
-                //输出路径
-                root: "preview",
-                html: "preview",
-                css: "preview/static/css",
-                js: "preview/static/js",
-                img: "preview/static/img",
-                data: "preview/data"
-            },
-            url: {
-                //线上路径（仅hbs中有效）
-                __: "./",
-                __css: "./static/css/",
-                __js: "./static/js/",
-                __img: "./static/img/",
-                __data: "./data/",
-                __title:"Demo"
-            }
+            
         }
     }
 };

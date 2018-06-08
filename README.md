@@ -46,9 +46,9 @@ kaci build          //默认方案：production
 kaci build -s 方案名
 ```
 
-打包项目（默认方案production）
+打包项目（默认方案production）  
 默认方案使用 _kaci.config.js_ 中 **build.production** 的配置。  
-你可以在 **build** 对象下新建一个键，作为自定义方案名（例如"preview"），并拷贝修改需要的内容，通过-s指定方案名按照新方案重新打包发布。
+你可以在 **build** 对象下新建一个键，作为自定义方案名（例如"preview"），并拷贝修改需要的内容（未定义的配置会继承default方案配置），通过-s指定方案名按照新方案重新打包发布。
 
 #### **4.获取更多帮助**
 
@@ -61,11 +61,10 @@ kaci help
 
 ```javascript
 module.exports = {
-
-    //当前构建模式
+    //当前构建工具
     tool: "gulp",
 
-    //源文件路径，你可以根据需要重新定义它们（相对项目根目录）
+    //源文件路径
     source: {
         root: "src",
         html: "src/template",
@@ -77,15 +76,15 @@ module.exports = {
 
     //本地服务配置
     server: {
-        reload: true,    //true自动刷新,false关闭自动刷新
-        open: false,     //是否自动打开
+        reload: true, //是否自动刷新
+        open:false, //是否自动打开
     },
 
     //构建选项
     build: {
-
-        //本地服务方案、用于提供localhost
+        //本地server方案（localhost预览）
         default: {
+            ignore: ["temp/*"], //忽略被监听（相对srcPath.root）
             //输出路径
             path: {
                 root: "dist",
@@ -105,19 +104,35 @@ module.exports = {
             },
             //js配置
             js: {
-                ignore: ["module/*", "include/*"], //忽略不被编译的子模块
-                babel: {...},  //babel编译选项
-                typescript: {...}, //typescript编译选项
-                compress: true, //是否压缩
-                sourcemap: true //是否生成sourcemap
+                ignore: ["module/*", "include/*"], //忽略被编译（子模块）
+                babel: {
+                    //https://babeljs.io/docs/usage/api/#options
+                    presets: ["env", "react"],
+                    plugins: []
+                },
+                typescript: {
+                    //https://www.tslang.cn/docs/handbook/compiler-options.html
+                    lib: ["DOM", "ES2015"], //编译lib
+                    target: "ES3", //编译目标ES版本 ES5,ES6,ES2015,ES2016,ES2017,ESNext
+                    alwaysStrict: true
+                },
+                compress: false, //是否压缩
+                sourcemap: false //是否生成sourcemap
             },
             //css配置
             css: {
-                ignore: ["module/*", "include/*"], //忽略不被编译的子模块
-                less: {...}, //less编译选项
-                sass: {...}, //sass编译选项
-                autoprefixer: {...}, //autoprefixer编译选项
-                compress: true, //是否压缩
+                ignore: ["module/*", "include/*"], //忽略被编译（子模块）
+                less: {}, //http://lesscss.org/usage/#less-options
+                sass: {}, //https://www.npmjs.com/package/node-sass
+                autoprefixer: {
+                    //前缀处理
+                    browsers: ["defaults"] //https://github.com/browserslist/browserslist#queries
+                },
+                compress: false, //是否压缩
+                clean: {
+                    //兼容性
+                    compatibility: "ie8" //https://github.com/jakubpawlowicz/clean-css#constructor-options
+                },
                 sourcemap: false //是否生成sourcemap
             },
             //html配置
@@ -126,30 +141,71 @@ module.exports = {
                 handlebars: {
                     batch: ["./src/template/module"] //hbs子模块目录
                 },
-                compress: true, //是否压缩
-                minifier: {...} //html压缩选项
+                compress: false, //是否压缩
+                minifier: {} //https://github.com/kangax/html-minifier#options-quick-reference
             },
-            //图片配置
             img: {
-                ignore: ["temp/*"] //忽略被处理（临时文件）
+                ignore: ["psd/*"] //忽略被处理（psd源文件等）
             },
-            //数据配置
             data: {
-                ignore: ["temp/*"] //忽略被处理（本地测试数据）
+                ignore: ["_bak/*"] //忽略被处理（备用数据）
             }
         },
-
         //默认build方案
         production: {
-            ...
-            //修改对应的输出路径，并设置需要修改的项            
+            //输出路径
+            path: {
+                root: "build",
+                html: "build",
+                css: "build/static/css",
+                js: "build/static/js",
+                img: "build/static/img",
+                data: "build/data"
+            },
+            //可能的线上路径（仅对hbs文件有效）
+            url: {
+                __: "./",
+                __css: "./static/css/",
+                __js: "./static/js/",
+                __img: "./static/img/",
+                __data: "./data/",
+                __title: "Demo"
+            },
+            //js压缩
+            js: {
+                compress: true, //是否压缩
+                sourcemap: true //是否生成sourcemap
+            },
+            //css压缩
+            css: {
+                compress: true, //是否压缩
+            },
+            //html压缩
+            html: {
+                compress: true, //是否压缩
+                minifier: {
+                    removeComments: true, //移除注释
+                    collapseWhitespace: true, //移除无效空格
+                    collapseBooleanAttributes: true,
+                    removeAttributeQuotes: true,
+                    removeRedundantAttributes: true,
+                    removeEmptyAttributes: true,
+                    removeScriptTypeAttributes: true,
+                    removeStyleLinkTypeAttributes: true,
+                    removeOptionalTags: true
+                }
+            },
+            img: {
+                ignore: ["psd/*","temp/*"] //忽略被处理（psd源文件、本地测试图片等）
+            },
+            data: {
+                ignore: ["_bak/*","temp/*"] //忽略被处理（本地测试数据等）
+            }
         },
-
-        //自定义build方案
-        preview : {
-            ...
-            //可以使用 [kaci build -m 方案名] 按照此配置来build
-            //你可以使用任意名称，但除default与production
+        //自定义方案
+        //使用kaci build -s $scheme(此处定义的名称) 即可使用对应模式构建项目
+        preview: {
+            
         }
     }
 };
