@@ -1,6 +1,6 @@
 # KACI
+整合 Gulp & webpack 的前端构建方案，懒人 "0" 配置。
 
-基于 Gulp & webpack 的前端构建方案，懒人 "0" 配置。
 ## _功能_
 ---
 + typescript
@@ -28,10 +28,13 @@ npm install -g kaci
 #### **1.初始化项目**
 
 ```
-kaci init           //默认方式：gulp
+kaci init           //默认工具：gulp
+kaci init -t gulp
 ```
 
-默认以**gulp**构建一个前端项目，自动生成初始结构，并会自动安装相关依赖包至项目下。
+初始化项目（默认gulp）  
+可通过-t指定其他工具构建，自动生成初始项目结构，并自动安装相关依赖。  
+支持的工具列表：gulp
 
 #### **2.启动本地服务**
 
@@ -40,19 +43,19 @@ kaci start          //默认端口：512
 kaci start -p 8080
 ```
 
-启动一个本地服务（默认端口为 512）  
+启动本地服务（默认端口为 512）  
 本地服务的构建使用 _kaci.config.js_ 中 **build.default** 的配置。
 
 #### **3.打包发布项目**
 
 ```
 kaci build          //默认方案：production
-kaci build -m 方案名
+kaci build -s 方案名
 ```
 
-打包发布项目，
-默认使用 _kaci.config.js_ 中的 **build.production** 方案。  
-你可以在 build 对象下新建一个键，作为自定义方案名（例如"preview"），并拷贝修改需要的内容，通过-m指定方案名按照新方案重新打包发布。
+打包项目（默认方案production）
+默认方案使用 _kaci.config.js_ 中 **build.production** 的配置。  
+你可以在 **build** 对象下新建一个键，作为自定义方案名（例如"preview"），并拷贝修改需要的内容，通过-s指定方案名按照新方案重新打包发布。
 
 #### **4.获取更多帮助**
 
@@ -70,7 +73,7 @@ kaci help
 module.exports = {
 
     //当前构建模式
-    mode: "gulp",
+    tool: "gulp",
 
     //源文件路径，你可以根据需要重新定义它们（相对项目根目录）
     source: {

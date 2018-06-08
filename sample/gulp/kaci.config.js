@@ -1,6 +1,6 @@
 module.exports = {
     //当前构建模式
-    mode: "gulp",
+    tool: "gulp",
 
     //源文件路径
     source: {
