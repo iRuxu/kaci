@@ -162,7 +162,7 @@ module.exports = {
                 img: "build/static/img",
                 data: "build/data"
             },
-            //可能的线上路径（仅对hbs文件有效）
+            //可能的线上路径（仅对hbs文件有效），可指定为绝对路径
             url: {
                 __: "./",
                 __css: "./static/css/",
@@ -203,9 +203,8 @@ module.exports = {
             }
         },
         //自定义方案
-        //使用kaci build -s $scheme(此处定义的名称) 即可使用对应模式构建项目
         preview: {
-            
+            //使用kaci build -s $scheme(此处定义的名称) 即可使用对应模式构建项目
         }
     }
 };

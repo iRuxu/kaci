@@ -141,9 +141,8 @@ module.exports = {
             }
         },
         //自定义方案
-        //使用kaci build -s $scheme(此处定义的名称) 即可使用对应模式构建项目
         preview: {
-            
+            //使用kaci build -s $scheme(此处定义的名称) 即可使用对应模式构建项目
         }
     }
 };
