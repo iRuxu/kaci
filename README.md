@@ -1,6 +1,15 @@
 # KACI
 
 基于 Gulp & webpack 的前端构建方案，懒人 "0" 配置。
+## _功能_
+---
++ typescript
++ babel
++ less
++ sass/sacc
++ handlebars
++ jsonlint
+
 
 ## _安装_
 
@@ -43,7 +52,7 @@ kaci build -m 方案名
 
 打包发布项目，
 默认使用 _kaci.config.js_ 中的 **build.production** 方案。  
-你可以在 build 对象下新建一个键，作为自定义方案名（例如"preview"），并拷贝修改需要的内容，执行如下命令即可按照新方案重新打包发布。
+你可以在 build 对象下新建一个键，作为自定义方案名（例如"preview"），并拷贝修改需要的内容，通过-m指定方案名按照新方案重新打包发布。
 
 #### **4.获取更多帮助**
 
