@@ -12,6 +12,8 @@ logs
 results
 
 npm-debug.log
+package-lock.json
+yarn.lock
 node_modules
 bower_components
 .bowerrc
