@@ -1,0 +1,28 @@
+{
+  "name": "",
+  "version": "",
+  "description": "",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "homepage": "",
+  "bugs": {
+    "url": "",
+    "email": ""
+  },
+  "scripts": {
+    "build": "rollup --config rollup.config.js"
+  },
+  "devDependencies": {
+    "rollup": "^0.59.4",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "rollup-plugin-babel": "^3.0.4",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-json": "^3.0.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-uglify": "^4.0.0"
+  }
+}

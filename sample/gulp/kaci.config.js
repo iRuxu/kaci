@@ -45,14 +45,15 @@ module.exports = {
                 ignore: ["module/*", "include/*"], //忽略被编译（子模块）
                 babel: {
                     //https://babeljs.io/docs/usage/api/#options
-                    presets: ["env", "react"],
-                    plugins: []
+                    presets: ["env","react","stage–3"],
+                    plugins: ["transform-runtime"]
                 },
                 typescript: {
                     //https://www.tslang.cn/docs/handbook/compiler-options.html
                     lib: ["DOM", "ES2015"], //编译lib
                     target: "ES3", //编译目标ES版本 ES5,ES6,ES2015,ES2016,ES2017,ESNext
-                    alwaysStrict: true
+                    alwaysStrict: true,
+                    //allowJS:true
                 },
                 compress: false, //是否压缩
                 sourcemap: false //是否生成sourcemap
