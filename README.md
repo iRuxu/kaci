@@ -23,12 +23,10 @@ npm install -g kaci
 ```
 kaci init           //默认工具：gulp
 kaci init -t gulp
-//安装相关依赖
-npm install
 ```
 
 初始化项目（默认gulp）  
-可通过-t指定其他工具构建，自动生成初始项目结构。  
+可通过-t指定其他工具构建，自动生成初始项目结构，自动检测安装相关依赖包。  
 支持的工具列表：gulp
 
 #### **2.启动本地服务**
