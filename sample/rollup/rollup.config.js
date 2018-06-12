@@ -12,11 +12,11 @@ export default {
         format: "iife"
     },
     plugins: [
+        resolve(),
+        json(),
         babel({
             exclude: 'node_modules/**'
         }),
-        json(),
-        resolve(),
         commonjs(),
         //uglify()
     ],
