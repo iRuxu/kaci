@@ -23,6 +23,8 @@ npm install -g kaci
 ```
 kaci init           //默认工具：gulp
 kaci init -t gulp
+//安装相关依赖
+npm install
 ```
 
 初始化项目（默认gulp）  
