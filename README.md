@@ -19,13 +19,13 @@ npm install -g kaci
 #### **1.初始化项目**
 
 ```
-kaci init           //默认工具：gulp 
+kaci init           //默认工具：gulp+webpack
 kaci init -t rollup
 ```
 
 初始化项目（默认gulp，通过配置文件设置是否启用webpack对js进行模块打包，默认开启）  
 可通过-t指定其他工具构建，自动生成初始项目结构，自动检测安装相关依赖包。  
-支持的工具列表：gulp、rollup
+支持的工具列表：gulp(内置webpack打包js模块)、rollup
 
 #### **2.启动本地服务**
 
