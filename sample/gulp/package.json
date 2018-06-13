@@ -2,6 +2,7 @@
   "devDependencies": {
     "autoprefixer": "^8.6.0",
     "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
@@ -30,6 +31,7 @@
     "lodash": "^4.17.10",
     "run-sequence": "^2.2.1",
     "sass": "^1.5.1",
-    "typescript": "^2.9.1"
+    "typescript": "^2.9.1",
+    "webpack": "^4.12.0"
   }
 }

@@ -2,6 +2,9 @@ module.exports = {
     //当前构建工具
     tool: "gulp",
 
+    //是否启用webpack打包js模块
+    webpack: true,
+
     //源文件路径
     source: {
         root: "src",
@@ -21,7 +24,7 @@ module.exports = {
     //构建选项
     build: {
         //本地server方案（localhost预览）
-        default: {
+        development: {
             ignore: ["temp/*"], //忽略被监听（相对srcPath.root）
             //输出路径
             path: {
@@ -42,19 +45,9 @@ module.exports = {
             },
             //js配置
             js: {
+                /*启用webpack时，以下设置不生效，仅webpack.config.js中设置有效
+                当启用自定义方案构建时，其webpack常规配置项会继承production方案（除路径等）*/
                 ignore: ["module/*", "include/*"], //忽略被编译（子模块）
-                babel: {
-                    //https://babeljs.io/docs/usage/api/#options
-                    presets: ["env","react","stage–3"],
-                    plugins: ["transform-runtime"]
-                },
-                typescript: {
-                    //https://www.tslang.cn/docs/handbook/compiler-options.html
-                    lib: ["DOM", "ES2015"], //编译lib
-                    target: "ES3", //编译目标ES版本 ES5,ES6,ES2015,ES2016,ES2017,ESNext
-                    alwaysStrict: true,
-                    //allowJS:true
-                },
                 compress: false, //是否压缩
                 sourcemap: false //是否生成sourcemap
             },
@@ -76,18 +69,17 @@ module.exports = {
             },
             //html配置
             html: {
-                ignore: ["module/*", "include/*"], //忽略处理（局部模块不需要被编译、临时页面）
+                ignore: ["module/*", "include/*"], //忽略处理（局部模块不需要被编译）
                 handlebars: {
                     batch: ["./src/template/module"] //hbs子模块目录
                 },
                 compress: false, //是否压缩
-                minifier: {} //https://github.com/kangax/html-minifier#options-quick-reference
             },
             img: {
-                ignore: ["psd/*"] //忽略被处理（psd源文件等）
+                ignore: ["**/*.psd"] //忽略源文件等
             },
             data: {
-                ignore: ["_bak/*"] //忽略被处理（备用数据）
+                ignore: []
             }
         },
         //默认build方案
@@ -132,18 +124,18 @@ module.exports = {
                     removeScriptTypeAttributes: true,
                     removeStyleLinkTypeAttributes: true,
                     removeOptionalTags: true
-                }
+                }//https://github.com/kangax/html-minifier#options-quick-reference
             },
             img: {
-                ignore: ["psd/*","temp/*"] //忽略被处理（psd源文件、本地测试图片等）
+                ignore: ["**/*.psd","temp/*"] //忽略psd源文件、本地测试图片等
             },
             data: {
-                ignore: ["_bak/*","temp/*"] //忽略被处理（本地测试数据等）
+                ignore: ["temp/*"] //忽略本地测试数据等
             }
         },
-        //自定义方案
-        preview: {
-            //使用kaci build -s $scheme(此处定义的名称) 即可使用对应模式构建项目
+        //自定义模式
+        preview:{
+            
         }
     }
 };

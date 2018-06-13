@@ -21,11 +21,12 @@ const lodash = require("lodash");
 
 //base
 const CONF = require("./kaci.config.js");
-const LOCALHOST = CONF.build.default.path.root;
+const LOCALHOST = CONF.build.development.path.root;
 
 //scheme
-const DEFAULT = CONF.build.default
+const DEVELOPMENT = CONF.build.development
 var SCHEME;
+var scheme_status = 'development';
 
 //source
 let SRC = CONF.source.root;
@@ -54,7 +55,6 @@ gulp.task("template", function() {
         .src([__path(SRC_HTML, "**/*.hbs"), ...ignore_files])
         .pipe(handlebars(baseURL, SCHEME.html.handlebars))
         .pipe(rename({ extname: ".html" }));
-    //TODO: register -> import 、 repeat
     let htmlfiles = gulp.src([__path(SRC_HTML, "**/*.html"), ...ignore_files]);
 
     //打包模板
@@ -63,7 +63,6 @@ gulp.task("template", function() {
     templatefiles.forEach(function(templatefile, i) {
         templatefile
             .pipe(cache("template"))
-            //TODO: 合并css、js模块
             //compress
             .pipe(gulpif(SCHEME.html.compress, htmlmin(SCHEME.html.minifier)))
             //output
@@ -87,7 +86,6 @@ gulp.task("style", function() {
     let lessfiles = gulp
         .src([__path(SRC_CSS, "**/*.less"), ...ignore_files])
         .pipe(less(SCHEME.css.less));
-    //TODO:csslab
     let sassfiles = gulp
         .src([
             __path(SRC_CSS, "**/*.sass"),
@@ -119,34 +117,54 @@ gulp.task("style", function() {
 const ts = require("gulp-typescript");
 const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
+const webpack = require('webpack');
+const webpackConfig = require('./webpack.config.js');
 gulp.task("script", function() {
-    //忽略被处理的模板文件
-    let ignore_files = [];
-    SCHEME.js.ignore.forEach(function(name, i) {
-        ignore_files.push("!" + __path(SRC_JS, name));
-    });
-    //编译es6、ts
-    let es6files = gulp
-        .src([__path(SRC_JS, "**/*.js"), ...ignore_files])
-        .pipe(babel(SCHEME.js.babel));
-    let tsfiles = gulp
-        .src([__path(SRC_JS, "**/*.ts"), ...ignore_files])
-        .pipe(ts(SCHEME.js.typescript));
-    //打包js
-    let jsfiles = [];
-    jsfiles.push(es6files, tsfiles);
-    jsfiles.forEach(function(jsfile, i) {
-        jsfile
-            .pipe(cache("script"))
-            //compress
-            .pipe(gulpif(SCHEME.js.compress, uglify()))
-            //soucemap
-            .pipe(gulpif(SCHEME.js.sourcemap, sourcemaps.init()))
-            .pipe(gulpif(SCHEME.js.sourcemap, sourcemaps.write("maps")))
-            //output
-            .pipe(remember("script"))
-            .pipe(gulp.dest(SCHEME.path.js));
-    });
+    //使用webpack打包时
+    if(CONF.webpack){
+        if(scheme_status=='development'){
+            webpack(webpackConfig[0]).run();
+        }else if(scheme_status=='production'){
+            webpack(webpackConfig[1]).run()
+        }else{
+            let custom_diff = {
+                output:{
+                    path:path.resolve(__dirname,CONF.build[scheme_status].path.js)
+                }
+            }
+            let custom_config = lodash.merge({},webpackConfig[1],custom_webpack_config)
+            webpack(custom_config).run()
+        }
+    //使用传统方案时
+    }else{
+        //忽略被处理的模板文件
+        let ignore_files = [];
+        SCHEME.js.ignore.forEach(function(name, i) {
+            ignore_files.push("!" + __path(SRC_JS, name));
+        });
+        //编译es6、ts
+        let es6files = gulp
+            .src([__path(SRC_JS, "**/*.js"), ...ignore_files])
+            .pipe(babel(SCHEME.js.babel));
+        let tsfiles = gulp
+            .src([__path(SRC_JS, "**/*.ts"), ...ignore_files])
+            .pipe(ts(SCHEME.js.typescript));
+        //打包js
+        let jsfiles = [];
+        jsfiles.push(es6files, tsfiles);
+        jsfiles.forEach(function(jsfile, i) {
+            jsfile
+                .pipe(cache("script"))
+                //compress
+                .pipe(gulpif(SCHEME.js.compress, uglify()))
+                //soucemap
+                .pipe(gulpif(SCHEME.js.sourcemap, sourcemaps.init()))
+                .pipe(gulpif(SCHEME.js.sourcemap, sourcemaps.write("maps")))
+                //output
+                .pipe(remember("script"))
+                .pipe(gulp.dest(SCHEME.path.js));
+        });
+    }
 });
 
 //img task
@@ -159,7 +177,6 @@ gulp.task("img", function() {
     //打包图片
     gulp.src([__path(SRC_IMG, "**/*"), ...ignore_files])
         .pipe(cache("img"))
-        //TODO:雪碧图、图片压缩优化
         //output
         .pipe(remember("img"))
         .pipe(gulp.dest(SCHEME.path.img));
@@ -223,7 +240,8 @@ gulp.task("reload", function() {
 gulp.task("start", function() {
 
     //设置本地服务方案
-    SCHEME = DEFAULT; 
+    scheme_status = 'development'
+    SCHEME = DEVELOPMENT; 
 
     //执行默认任务与启动本地服务
     run('default','server')
@@ -246,12 +264,14 @@ gulp.task("start", function() {
 gulp.task("build", function() {
 
     //重设scheme指向
-    let current_scheme = process.argv[3].slice(2)
-    if(!CONF.build[current_scheme]){
+    scheme_status = process.argv[3].slice(2)
+
+    if(!CONF.build[scheme_status]){
         console.error('\u00d7\0\0error : 指定的build方案不存在，请检查kaci.config.js中build配置项')
         return
     }
-    SCHEME = lodash.merge(DEFAULT,CONF.build[current_scheme])
+    let current_scheme = lodash.merge({},DEVELOPMENT,CONF.build[scheme_status])
+    SCHEME = current_scheme
 
     //清空打包目录
     let del_files = SCHEME.path.root + '/**'

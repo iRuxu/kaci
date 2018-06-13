@@ -60,5 +60,9 @@
     "type": "git",
     "url": "git+https://github.com/iRuxu/kaci.git"
   },
-  "version": "0.1.2"
+  "version": "0.1.2",
+  "devDependencies": {
+    "gulp-core-build-webpack": "^0.2.3",
+    "webpack-stream": "^4.0.3"
+  }
 }

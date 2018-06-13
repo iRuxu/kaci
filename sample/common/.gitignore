@@ -1,6 +1,7 @@
 temp
 src/temp
 build
+.idea
 
 npm-debug.log
 package-lock.json
