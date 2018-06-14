@@ -135,6 +135,9 @@ gulp.task("script", function() {
             let custom_config = lodash.merge({},webpackConfig[1],custom_webpack_config)
             webpack(custom_config).run()
         }
+        //独立处理lib文件
+        gulp.src([__path(SRC_JS, "lib/*.js")])
+            .pipe(gulp.dest(__path(SCHEME.path.js,'lib')));
     //使用传统方案时
     }else{
         //忽略被处理的模板文件
