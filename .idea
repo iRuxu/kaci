@@ -1,0 +1,88 @@
+TODO 2.0
+
+.kaci/
+    config.js(配置文件)
+        entry:{}
+        rules:{
+            html:{
+                compress: //压缩项
+            },
+            css:{
+                csslab://全局预引入的var,function等
+                compress: //压缩项
+            },
+            js:{
+                babel: //babel配置规则
+                mods:cjs\umd\..  //指定js模块处理规则
+                compress: //压缩项
+            },
+            img:{
+                base64: //图片base64触发基准
+                compress: //压缩项、图片优化规则（禁止优化标识符）
+            },
+            font:{
+                //字体多格式自动转换目标类型
+                //忽略的font（预装字体不处理，考虑mac&windows）
+            },
+        }
+    path.js(路径配置)
+        src:{
+            tpl:
+            css:
+            js:
+            img:
+            font:
+            data:
+        },
+        dist:
+        build:
+        custom:
+    global.js(全局数据配置)
+
+src/
+    1.以html为入口，配置entry
+    2.分析模板
+        1.分析引入的子模板
+        2.分析全局变量替换=>use global.js + path.js
+        3.?分析页面数据
+        4.分析内联图片=>图片自动优化进程
+    3.分析CSS
+        1.自动寻找同名less/sass/postcss（其余未使用部分均不会编译）
+        2.分析CSS type标签，支持分组合并
+        3.分析CSS内容、加载全局项、开始编译
+        4.分析CSS背景图：base64转换、雪碧图处理=>图片自动优化进程
+        5.分析font使用、自动生成多font格式=>字体自动转换进程（未使用字体不处理）
+    4.分析JS
+        1.自动寻找同名js/es/mjs（其余未使用部分均不会编译）
+        2.分析js type标签，支持分组合并
+        3.分析js 并使用babel指定规则编译至cjs规范
+        4.分析js modules、自动根据规范生成
+    5.
+
+dist/ (本地预览)
+build/ (打包)
+custom/ (自定义)
+
+
+
+
+
+
+
+
+
+
+js:
+webpack -> es6-loader -> 打包
+
+hbs:
+register -> import 、 repeat
+合并global css/js
+
+css:
+csslab
+
+img:
+雪碧图
+base64
+图片优化压缩
