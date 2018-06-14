@@ -101,7 +101,7 @@ gulp.task("style", function() {
         stylefile
             .pipe(cache("style"))
             //autoprefix
-            .pipe(autoprefixer(SCHEME.css.autoprefixer))
+            //.pipe(autoprefixer(SCHEME.css.autoprefixer))
             //compress
             .pipe(gulpif(SCHEME.css.compress, cleancss(SCHEME.css.clean)))
             //soucemap
@@ -137,6 +137,7 @@ gulp.task("script", function() {
         }
         //独立处理lib文件
         gulp.src([__path(SRC_JS, "lib/*.js")])
+            .pipe(gulpif(SCHEME.js.compress, uglify()))
             .pipe(gulp.dest(__path(SCHEME.path.js,'lib')));
     //使用传统方案时
     }else{
@@ -208,7 +209,7 @@ gulp.task("data", function() {
 });
 
 //default task
-gulp.task("default", ["template", "style", "script", "img", "data"]);
+gulp.task("default", ["template", "style", "script","img", "data"]);
 
 //Event Task===================================================
 
@@ -257,9 +258,9 @@ gulp.task("start", function() {
     });
 
     //监听与自动刷新
-    let start_task = ["default"];
-    CONF.server.reload && start_task.push("reload");
-    gulp.watch([watch_files, ...ignore_files], start_task);
+    gulp.watch([watch_files, ...ignore_files], function (){
+        CONF.server.reload ? run('default','reload') : run('default')
+    });
 
 });
 
