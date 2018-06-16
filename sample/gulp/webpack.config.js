@@ -6,7 +6,7 @@ const lodash = require("lodash");
 
 //获取多页面的每个入口文件，用于配置中的entry
 function getEntry() {
-    let filelist = fs.readdirSync(path.resolve(process.cwd(), CONF.source.js));
+    let filelist = fs.readdirSync(path.resolve(process.cwd(), CONF.source.root,CONF.source.js));
     let matchs = [],
         files = {};
     filelist.forEach(function(file) {
@@ -14,6 +14,7 @@ function getEntry() {
         if (matchs) {
             files[matchs[1]] = path.resolve(
                 process.cwd(),
+                CONF.source.root,
                 CONF.source.js,
                 file
             );
@@ -48,7 +49,7 @@ const common_config = {
 let dev_config = lodash.merge({}, common_config, {
     mode: "development",
     output: {
-        path: path.resolve(__dirname, CONF.build.development.path.js)
+        path: path.resolve(__dirname, CONF.build.development.path,CONF.source.js)
     },
     devtool: "eval"
 });
@@ -57,7 +58,7 @@ let dev_config = lodash.merge({}, common_config, {
 let pro_config = lodash.merge({}, common_config, {
     mode: "production",
     output: {
-        path: path.resolve(__dirname, CONF.build.production.path.js)
+        path: path.resolve(__dirname, CONF.build.production.path,CONF.source.js)
     },
     devtool: "source-maps",
     plugins: []

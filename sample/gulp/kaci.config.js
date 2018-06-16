@@ -8,11 +8,13 @@ module.exports = {
     //源文件路径
     source: {
         root: "src",
-        html: "src/template",
-        css: "src/css",
-        js: "src/js",
-        img: "src/img",
-        data: "src/data"
+        html: "template",
+        hbsmod:"template/module", //hbs子模块目录
+        css: "css",
+        js: "js",
+        jslib:"js/lib",  //开启webpack模式时，不作为模块处理的公共lib库
+        img: "img",
+        data: "data"
     },
 
     //本地服务配置
@@ -27,21 +29,15 @@ module.exports = {
         development: {
             ignore: ["temp/*"], //忽略被监听（相对srcPath.root）
             //输出路径
-            path: {
-                root: "dist",
-                html: "dist/template",
-                css: "dist/css",
-                js: "dist/js",
-                img: "dist/img",
-                data: "dist/data"
-            },
-            //用于hbs模板渲染的全局变量、可根据不同build方案定义不同的地址
-            url: {
+            path: "dist",
+            //用于hbs模板渲染的全局变量、可根据不同build方案定义不同的cdn地址等
+            global: {
                 __: "./",
                 __css: "../css/",
                 __js: "../js/",
                 __img: "../img/",
-                __data: "../data/"
+                __data: "../data/",
+                __title: "Demo"
             },
             //js配置
             js: {
@@ -58,7 +54,7 @@ module.exports = {
                 sass: {}, //https://www.npmjs.com/package/node-sass
                 autoprefixer: {
                     //前缀处理
-                    browsers: ["defaults"] //https://github.com/browserslist/browserslist#queries
+                    browsers: ["last 4 versions"] //https://github.com/browserslist/browserslist#queries
                 },
                 compress: false, //是否压缩
                 clean: {
@@ -70,9 +66,6 @@ module.exports = {
             //html配置
             html: {
                 ignore: ["module/*", "include/*"], //忽略处理（局部模块不需要被编译）
-                handlebars: {
-                    batch: ["./src/template/module"] //hbs子模块目录
-                },
                 compress: false, //是否压缩
             },
             img: {
@@ -85,21 +78,14 @@ module.exports = {
         //默认build方案
         production: {
             //输出路径
-            path: {
-                root: "build",
-                html: "build",
-                css: "build/static/css",
-                js: "build/static/js",
-                img: "build/static/img",
-                data: "build/data"
-            },
+            path: "build",
             //可能的线上路径（仅对hbs文件有效）
             url: {
                 __: "./",
-                __css: "./static/css/",
-                __js: "./static/js/",
-                __img: "./static/img/",
-                __data: "./data/",
+                __css: "../css/",
+                __js: "../js/",
+                __img: "../img/",
+                __data: "../data/",
                 __title: "Demo"
             },
             //js压缩
