@@ -8,8 +8,8 @@ module.exports = {
     //源文件路径
     source: {
         root: "src",
-        html: "template",
-        hbsmod:"template/module", //hbs子模块目录
+        html: "html",
+        hbsmod:"html/module", //hbs子模块目录
         css: "css",
         js: "js",
         jslib:"js/lib",  //开启webpack模式时，不作为模块处理的公共lib库
