@@ -10,10 +10,10 @@ module.exports = {
         root: "src",
         html: "html",
         hbsmod:"html/module", //hbs子模块目录
-        css: "static/css",
-        js: "static/js",
-        jslib:"static/js/lib",  //开启webpack打包时，不作为模块处理的公共lib库
-        img: "static/img",
+        css: "css",
+        js: "js",
+        jslib:"js/lib",  //开启webpack打包时，不作为模块处理的公共lib库
+        img: "img",
         data: "data"
     },
 
@@ -32,18 +32,18 @@ module.exports = {
             path: {
                 root: "dist",
                 html: "html",
-                css: "static/css",
-                js: "static/js",
-                jslib:"static/js/lib",
-                img: "static/img",
+                css: "css",
+                js: "js",
+                jslib:"js/lib",
+                img: "img",
                 data: "data"
             },
             //用于hbs模板渲染的全局变量、可根据不同build方案定义不同的cdn地址等
             global: {
                 __: "./",
-                __css: "../static/css/",
-                __js: "../static/js/",
-                __img: "../static/img/",
+                __css: "../css/",
+                __js: "../js/",
+                __img: "../img/",
                 __data: "../data/"
             },
             //js配置
@@ -113,7 +113,7 @@ module.exports = {
             },
             //html压缩
             html: {
-                compress: false, //是否压缩
+                compress: true, //是否压缩
             },
             img: {
                 ignore: ["**/*.psd","temp/*"] //忽略psd源文件、本地测试图片等

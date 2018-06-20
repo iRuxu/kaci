@@ -68,11 +68,13 @@ module.exports = {
     //源文件路径
     source: {
         root: "src",
-        html: "src/template",
-        css: "src/css",
-        js: "src/js",
-        img: "src/img",
-        data: "src/data"
+        html: "html",
+        hbsmod:"html/module", //hbs子模块目录
+        css: "css",
+        js: "js",
+        jslib:"js/lib",  //开启webpack打包时，不作为模块处理的公共lib库
+        img: "img",
+        data: "data"
     },
 
     //本地服务配置
@@ -89,14 +91,15 @@ module.exports = {
             //输出路径
             path: {
                 root: "dist",
-                html: "dist/template",
-                css: "dist/css",
-                js: "dist/js",
-                img: "dist/img",
-                data: "dist/data"
+                html: "html",
+                css: "css",
+                js: "js",
+                jslib:"js/lib",
+                img: "img",
+                data: "data"
             },
-            //用于hbs模板渲染的全局变量、可根据不同build方案定义不同的地址
-            url: {
+            //用于hbs模板渲染的全局变量、可根据不同build方案定义不同的cdn地址等
+            global: {
                 __: "./",
                 __css: "../css/",
                 __js: "../js/",
@@ -118,7 +121,7 @@ module.exports = {
                 sass: {}, //https://www.npmjs.com/package/node-sass
                 autoprefixer: {
                     //前缀处理
-                    browsers: ["defaults"] //https://github.com/browserslist/browserslist#queries
+                    browsers: ["last 4 versions"] //https://github.com/browserslist/browserslist#queries
                 },
                 compress: false, //是否压缩
                 clean: {
@@ -130,9 +133,6 @@ module.exports = {
             //html配置
             html: {
                 ignore: ["module/*", "include/*"], //忽略处理（局部模块不需要被编译）
-                handlebars: {
-                    batch: ["./src/template/module"] //hbs子模块目录
-                },
                 compress: false, //是否压缩
             },
             img: {
@@ -147,20 +147,20 @@ module.exports = {
             //输出路径
             path: {
                 root: "build",
-                html: "build",
-                css: "build/static/css",
-                js: "build/static/js",
-                img: "build/static/img",
-                data: "build/data"
+                html: "./",
+                css: "static/css",
+                js: "static/js",
+                jslib:"static/js/lib",
+                img: "static/img",
+                data: "data"
             },
             //可能的线上路径（仅对hbs文件有效）
-            url: {
+            global: {
                 __: "./",
                 __css: "./static/css/",
                 __js: "./static/js/",
                 __img: "./static/img/",
                 __data: "./data/",
-                __title: "Demo"
             },
             //js压缩
             js: {
@@ -174,17 +174,6 @@ module.exports = {
             //html压缩
             html: {
                 compress: true, //是否压缩
-                minifier: {
-                    removeComments: true, //移除注释
-                    collapseWhitespace: true, //移除无效空格
-                    collapseBooleanAttributes: true,
-                    removeAttributeQuotes: true,
-                    removeRedundantAttributes: true,
-                    removeEmptyAttributes: true,
-                    removeScriptTypeAttributes: true,
-                    removeStyleLinkTypeAttributes: true,
-                    removeOptionalTags: true
-                }//https://github.com/kangax/html-minifier#options-quick-reference
             },
             img: {
                 ignore: ["**/*.psd","temp/*"] //忽略psd源文件、本地测试图片等
@@ -195,7 +184,7 @@ module.exports = {
         },
         //自定义模式
         preview:{
-            //使用kaci build -s $scheme(此处定义的名称) 即可使用对应模式构建项目
+            
         }
     }
 };
