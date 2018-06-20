@@ -114,6 +114,17 @@ module.exports = {
             //html压缩
             html: {
                 compress: true, //是否压缩
+                minifier: {		
+                    removeComments: true, //移除注释		
+                    collapseWhitespace: true, //移除无效空格		
+                    collapseBooleanAttributes: true,		
+                    removeAttributeQuotes: true,		
+                    removeRedundantAttributes: true,		
+                    removeEmptyAttributes: true,		
+                    removeScriptTypeAttributes: true,		
+                    removeStyleLinkTypeAttributes: true,		
+                    removeOptionalTags: true		
+                }//https://github.com/kangax/html-minifier#options-quick-reference
             },
             img: {
                 ignore: ["**/*.psd","temp/*"] //忽略psd源文件、本地测试图片等
@@ -124,7 +135,7 @@ module.exports = {
         },
         //自定义模式
         preview:{
-            
+            //使用kaci build -s $scheme(此处定义的名称) 即可使用对应模式构建项目
         }
     }
 };
