@@ -10,10 +10,10 @@ module.exports = {
         root: "src",
         html: "html",
         hbsmod:"html/module", //hbs子模块目录
-        css: "css",
-        js: "js",
-        jslib:"js/lib",  //开启webpack模式时，不作为模块处理的公共lib库
-        img: "img",
+        css: "static/css",
+        js: "static/js",
+        jslib:"static/js/lib",  //开启webpack打包时，不作为模块处理的公共lib库
+        img: "static/img",
         data: "data"
     },
 
@@ -29,15 +29,22 @@ module.exports = {
         development: {
             ignore: ["temp/*"], //忽略被监听（相对srcPath.root）
             //输出路径
-            path: "dist",
+            path: {
+                root: "dist",
+                html: "html",
+                css: "static/css",
+                js: "static/js",
+                jslib:"static/js/lib",
+                img: "static/img",
+                data: "data"
+            },
             //用于hbs模板渲染的全局变量、可根据不同build方案定义不同的cdn地址等
             global: {
                 __: "./",
-                __css: "../css/",
-                __js: "../js/",
-                __img: "../img/",
-                __data: "../data/",
-                __title: "Demo"
+                __css: "../static/css/",
+                __js: "../static/js/",
+                __img: "../static/img/",
+                __data: "../data/"
             },
             //js配置
             js: {
@@ -78,15 +85,22 @@ module.exports = {
         //默认build方案
         production: {
             //输出路径
-            path: "build",
+            path: {
+                root: "build",
+                html: "./",
+                css: "static/css",
+                js: "static/js",
+                jslib:"static/js/lib",
+                img: "static/img",
+                data: "data"
+            },
             //可能的线上路径（仅对hbs文件有效）
-            url: {
+            global: {
                 __: "./",
-                __css: "../css/",
-                __js: "../js/",
-                __img: "../img/",
-                __data: "../data/",
-                __title: "Demo"
+                __css: "./static/css/",
+                __js: "./static/js/",
+                __img: "./static/img/",
+                __data: "./data/",
             },
             //js压缩
             js: {
@@ -99,18 +113,7 @@ module.exports = {
             },
             //html压缩
             html: {
-                compress: true, //是否压缩
-                minifier: {
-                    removeComments: true, //移除注释
-                    collapseWhitespace: true, //移除无效空格
-                    collapseBooleanAttributes: true,
-                    removeAttributeQuotes: true,
-                    removeRedundantAttributes: true,
-                    removeEmptyAttributes: true,
-                    removeScriptTypeAttributes: true,
-                    removeStyleLinkTypeAttributes: true,
-                    removeOptionalTags: true
-                }//https://github.com/kangax/html-minifier#options-quick-reference
+                compress: false, //是否压缩
             },
             img: {
                 ignore: ["**/*.psd","temp/*"] //忽略psd源文件、本地测试图片等

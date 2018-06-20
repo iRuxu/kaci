@@ -49,7 +49,7 @@ const common_config = {
 let dev_config = lodash.merge({}, common_config, {
     mode: "development",
     output: {
-        path: path.resolve(__dirname, CONF.build.development.path,CONF.source.js)
+        path: path.resolve(__dirname,CONF.build.development.path.root, CONF.build.development.path.js)
     },
     devtool: "eval"
 });
@@ -58,7 +58,7 @@ let dev_config = lodash.merge({}, common_config, {
 let pro_config = lodash.merge({}, common_config, {
     mode: "production",
     output: {
-        path: path.resolve(__dirname, CONF.build.production.path,CONF.source.js)
+        path: path.resolve(__dirname,CONF.build.production.path.root, CONF.build.production.path.js)
     },
     devtool: "source-maps",
     plugins: []

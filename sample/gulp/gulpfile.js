@@ -22,20 +22,13 @@ const lodash = require("lodash");
 
 //base
 const CONF = require("./kaci.config.js");
-const LOCALHOST = CONF.build.development.path;
+let SRC = CONF.source.root;
+const LOCALHOST = CONF.build.development.path.root;
 
 //scheme
 const DEVELOPMENT = CONF.build.development
 var SCHEME;
 var scheme_status = 'development';
-
-//source
-let SRC = CONF.source.root;
-let SRC_HTML = __path(SRC,CONF.source.html);
-let SRC_CSS = __path(SRC,CONF.source.css);
-let SRC_JS = __path(SRC,CONF.source.js);
-let SRC_IMG = __path(SRC,CONF.source.img);
-let SRC_DATA = __path(SRC,CONF.source.data);
 
 //Basic Task===================================================
 
@@ -47,19 +40,19 @@ gulp.task("template", function() {
     //忽略被处理的模板文件
     let ignore_files = [];
     SCHEME.html.ignore.forEach(function(name, i) {
-        ignore_files.push("!" + __path(SRC_HTML, name));
+        ignore_files.push("!" + __path(SRC,CONF.source.html, name));
     });
 
     //编译模板
     let global = SCHEME.global;
     let hbsfiles = gulp
-        .src([__path(SRC_HTML, "**/*.hbs"), ...ignore_files])
+        .src([__path(SRC,CONF.source.html, "**/*.hbs"), ...ignore_files])
         .pipe(plumber())
         .pipe(handlebars(global, {
-            batch: [__path(CONF.source.root,CONF.source.hbsmod)]
+            batch: [__path(SRC,CONF.source.hbsmod)]
         }))
         .pipe(rename({ extname: ".html" }));
-    let htmlfiles = gulp.src([__path(SRC_HTML, "**/*.html"), ...ignore_files]);
+    let htmlfiles = gulp.src([__path(SRC,CONF.source.html, "**/*.html"), ...ignore_files]);
 
     //打包模板
     let templatefiles = [];
@@ -71,7 +64,7 @@ gulp.task("template", function() {
             .pipe(gulpif(SCHEME.html.compress, htmlmin(SCHEME.html.minifier)))
             //output
             .pipe(remember("template"))
-            .pipe(gulp.dest(__path(SCHEME.path,CONF.source.html)))
+            .pipe(gulp.dest(__path(SCHEME.path.root,SCHEME.path.html)))
     });
 });
 
@@ -84,22 +77,22 @@ gulp.task("style", function() {
     //忽略被处理的模板文件
     let ignore_files = [];
     SCHEME.css.ignore.forEach(function(name, i) {
-        ignore_files.push("!" + __path(SRC_CSS, name));
+        ignore_files.push("!" + __path(SRC,CONF.source.css, name));
     });
     //编译less、sass
     let lessfiles = gulp
-        .src([__path(SRC_CSS, "**/*.less"), ...ignore_files])
+        .src([__path(SRC,CONF.source.css, "**/*.less"), ...ignore_files])
         .pipe(plumber())
         .pipe(less(SCHEME.css.less));
     let sassfiles = gulp
         .src([
-            __path(SRC_CSS, "**/*.sass"),
-            __path(SRC_CSS, "**/*.scss"),
+            __path(SRC,CONF.source.css, "**/*.sass"),
+            __path(SRC,CONF.source.css, "**/*.scss"),
             ...ignore_files
         ])
         .pipe(plumber())
         .pipe(sass(SCHEME.css.sass));
-    let cssfiles = gulp.src(__path(SRC_CSS, "**/*.css"));
+    let cssfiles = gulp.src(__path(SRC,CONF.source.css, "**/*.css"));
     //打包样式
     let stylefiles = [];
     stylefiles.push(lessfiles, sassfiles, cssfiles);
@@ -115,7 +108,7 @@ gulp.task("style", function() {
             .pipe(gulpif(SCHEME.css.sourcemap, sourcemaps.write("maps")))
             //output
             .pipe(remember("style"))
-            .pipe(gulp.dest(__path(SCHEME.path,CONF.source.css)));
+            .pipe(gulp.dest(__path(SCHEME.path.root,SCHEME.path.css)));
     });
 });
 
@@ -128,6 +121,12 @@ const webpackConfig = require('./webpack.config.js');
 gulp.task("script", function() {
     //使用webpack打包时
     if(CONF.webpack){
+
+        //独立处理lib文件 
+        gulp.src([__path(SRC,CONF.source.jslib, "**/*")])
+            .pipe(gulpif(SCHEME.js.compress, uglify()))
+            .pipe(gulp.dest(__path(SCHEME.path.root,SCHEME.path.jslib)));
+
         if(scheme_status=='development'){
             webpack(webpackConfig[0]).run();
         }else if(scheme_status=='production'){
@@ -141,24 +140,20 @@ gulp.task("script", function() {
             let custom_config = lodash.merge({},webpackConfig[1],custom_webpack_config)
             webpack(custom_config).run()
         }
-        //独立处理lib文件 
-        gulp.src([__path(CONF.source.jslib, "**/*")])
-            .pipe(gulpif(SCHEME.js.compress, uglify()))
-            .pipe(gulp.dest(__path(SCHEME.path,CONF.source.jslib)));
     //使用传统方案时
     }else{
         //忽略被处理的模板文件
         let ignore_files = [];
         SCHEME.js.ignore.forEach(function(name, i) {
-            ignore_files.push("!" + __path(SRC_JS, name));
+            ignore_files.push("!" + __path(SRC,CONF.source.js, name));
         });
         //编译es6、ts
         let es6files = gulp
-            .src([__path(SRC_JS, "**/*.js"), ...ignore_files])
+            .src([__path(SRC,CONF.source.js, "**/*.js"), ...ignore_files])
             .pipe(plumber())
             .pipe(babel(SCHEME.js.babel));
         let tsfiles = gulp
-            .src([__path(SRC_JS, "**/*.ts"), ...ignore_files])
+            .src([__path(SRC,CONF.source.js, "**/*.ts"), ...ignore_files])
             .pipe(plumber())
             .pipe(ts(SCHEME.js.typescript));
         //打包js
@@ -174,7 +169,7 @@ gulp.task("script", function() {
                 .pipe(gulpif(SCHEME.js.sourcemap, sourcemaps.write("maps")))
                 //output
                 .pipe(remember("script"))
-                .pipe(gulp.dest(__path(SCHEME.path,CONF.source.js)));
+                .pipe(gulp.dest(__path(SCHEME.path.root,SCHEME.path.js)));
         });
     }
 });
@@ -184,15 +179,15 @@ gulp.task("img", function() {
     //忽略临时图片文件
     let ignore_files = [];
     SCHEME.img.ignore.forEach(function(name, i) {
-        ignore_files.push("!" + __path(SRC_IMG, name));
+        ignore_files.push("!" + __path(SRC,CONF.source.img, name));
     });
     //打包图片
-    gulp.src([__path(SRC_IMG, "**/*"), ...ignore_files])
+    gulp.src([__path(SRC,CONF.source.img, "**/*"), ...ignore_files])
         .pipe(cache("img"))
         .pipe(plumber())
         //output
         .pipe(remember("img"))
-        .pipe(gulp.dest(__path(SCHEME.path,CONF.source.img)));
+        .pipe(gulp.dest(__path(SCHEME.path.root,SCHEME.path.img)));
 });
 
 //data task
@@ -201,13 +196,13 @@ gulp.task("data", function() {
     //忽略处理本地测试数据
     let ignore_files = [];
     SCHEME.data.ignore.forEach(function(name, i) {
-        ignore_files.push("!" + __path(SRC_DATA, name));
+        ignore_files.push("!" + __path(SRC,CONF.source.data, name));
     });
     //打包验证数据文件
     let json_reporter = function(file) {
         console.error(`JSON文件错误：${file.path}，请检查双引号、逗号、分号`)
     };
-    gulp.src([__path(SRC_DATA, "**/*"), ...ignore_files])
+    gulp.src([__path(SRC,CONF.source.data, "**/*"), ...ignore_files])
         .pipe(cache("data"))
         .pipe(plumber())
         //Lint
@@ -215,7 +210,7 @@ gulp.task("data", function() {
         .pipe(jsonlint.reporter(json_reporter))
         //output
         .pipe(remember("data"))
-        .pipe(gulp.dest(__path(SCHEME.path,CONF.source.data)));
+        .pipe(gulp.dest(__path(SCHEME.path.root,SCHEME.path.data)));
 });
 
 //default task
