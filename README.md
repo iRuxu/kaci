@@ -19,23 +19,19 @@ npm install -g kaci
 #### **1.初始化项目**
 
 ```
-kaci init           //默认工具：gulp+webpack
-kaci init -t rollup
+kaci init           
 ```
-
-初始化项目（默认gulp，通过配置文件设置是否启用webpack对js进行模块打包，默认开启）  
-可通过-t指定其他工具构建，自动生成初始项目结构，自动检测安装相关依赖包。  
-支持的工具列表：gulp(内置webpack打包js模块)、rollup
+初始化项目（通过配置文件设置是否启用webpack对js进行模块打包，默认开启）  
 
 #### **2.启动本地服务**
 
 ```
-kaci start          //默认端口：512
+kaci start          //默认端口：1024
 kaci start -p 8080
 ```
 
-启动本地服务（默认端口为 512）  
-本地服务的构建使用 _kaci.config.js_ 中 **build.default** 的配置。  
+启动本地服务（默认端口为 1024）  
+本地服务的构建使用 _kaci.config.js_ 中 **build.development** 的配置。  
 如运行一个已有项目，你可能需要手动安装项目依赖：npm install
 
 #### **3.打包发布项目**
@@ -60,8 +56,6 @@ kaci help
 
 ```javascript
 module.exports = {
-    //当前构建工具
-    tool: "gulp",
 
     //是否启用webpack打包js模块
     webpack: true,
@@ -109,6 +103,7 @@ module.exports = {
             },
             //js配置
             js: {
+                enable: true,   //是否启用相关功能
                 /*启用webpack时，以下设置不生效，仅webpack.config.js中设置有效
                 当启用自定义方案构建时，其webpack常规配置项会继承production方案（除路径等）*/
                 ignore: ["module/*", "include/*"], //忽略被编译（子模块）
@@ -117,6 +112,7 @@ module.exports = {
             },
             //css配置
             css: {
+                enable: true,   //是否启用相关功能
                 ignore: ["module/*", "include/*"], //忽略被编译（子模块）
                 less: {}, //http://lesscss.org/usage/#less-options
                 sass: {}, //https://www.npmjs.com/package/node-sass
@@ -133,13 +129,16 @@ module.exports = {
             },
             //html配置
             html: {
+                enable: true,   //是否启用相关功能
                 ignore: ["module/*", "include/*"], //忽略处理（局部模块不需要被编译）
                 compress: false, //是否压缩
             },
             img: {
+                enable: true,   //是否启用相关功能
                 ignore: ["**/*.psd"] //忽略源文件等
             },
             data: {
+                enable: true,   //是否启用相关功能
                 ignore: []
             }
         },

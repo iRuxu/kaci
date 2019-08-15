@@ -1,5 +1,6 @@
 module.exports = {
-    //当前构建工具
+
+    //默认构建工具
     tool: "gulp",
 
     //是否启用webpack打包js模块
@@ -48,6 +49,7 @@ module.exports = {
             },
             //js配置
             js: {
+                enable: true,   //是否启用相关功能
                 /*启用webpack时，以下设置不生效，仅webpack.config.js中设置有效
                 当启用自定义方案构建时，其webpack常规配置项会继承production方案（除路径等）*/
                 ignore: ["module/*", "include/*"], //忽略被编译（子模块）
@@ -56,6 +58,7 @@ module.exports = {
             },
             //css配置
             css: {
+                enable: true,   //是否启用相关功能
                 ignore: ["module/*", "include/*"], //忽略被编译（子模块）
                 less: {}, //http://lesscss.org/usage/#less-options
                 sass: {}, //https://www.npmjs.com/package/node-sass
@@ -72,13 +75,16 @@ module.exports = {
             },
             //html配置
             html: {
+                enable: true,   //是否启用相关功能
                 ignore: ["module/*", "include/*"], //忽略处理（局部模块不需要被编译）
                 compress: false, //是否压缩
             },
             img: {
+                enable: true,   //是否启用相关功能
                 ignore: ["**/*.psd"] //忽略源文件等
             },
             data: {
+                enable: true,   //是否启用相关功能
                 ignore: []
             }
         },

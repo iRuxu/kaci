@@ -37,6 +37,8 @@ const htmlmin = require("gulp-htmlmin");
 const handlebars = require("gulp-compile-handlebars");
 gulp.task("template", function() {
 
+    if (!CONF.build.development.html.enable) return;
+
     //忽略被处理的模板文件
     let ignore_files = [];
     SCHEME.html.ignore.forEach(function(name, i) {
@@ -74,6 +76,8 @@ const sass = require("gulp-sass");
 const autoprefixer = require("gulp-autoprefixer");
 const cleancss = require("gulp-clean-css");
 gulp.task("style", function() {
+    if (!CONF.build.development.css.enable) return;
+
     //忽略被处理的模板文件
     let ignore_files = [];
     SCHEME.css.ignore.forEach(function(name, i) {
@@ -119,6 +123,8 @@ const uglify = require("gulp-uglify");
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config.js');
 gulp.task("script", function() {
+    if (!CONF.build.development.js.enable) return;
+
     //使用webpack打包时
     if(CONF.webpack){
 
@@ -176,6 +182,8 @@ gulp.task("script", function() {
 
 //img task
 gulp.task("img", function() {
+    if (!CONF.build.development.img.enable) return;
+
     //忽略临时图片文件
     let ignore_files = [];
     SCHEME.img.ignore.forEach(function(name, i) {
@@ -193,6 +201,8 @@ gulp.task("img", function() {
 //data task
 const jsonlint = require("gulp-jsonlint");
 gulp.task("data", function() {
+    if (!CONF.build.development.data.enable) return;
+
     //忽略处理本地测试数据
     let ignore_files = [];
     SCHEME.data.ignore.forEach(function(name, i) {

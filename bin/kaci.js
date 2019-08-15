@@ -29,11 +29,7 @@ cmd.command('init')
     .description('初始化项目')
     .action(function (argvs){
         echo('tip',`init : 初始化项目..`)
-        if(!argvs.tool){
-            _init[setting.tool]()
-        }else{
-            _init[argvs.tool]()
-        }
+        _init[setting.tool]()
     })
 
 //启动服务
