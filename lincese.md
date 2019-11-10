@@ -1,4 +1,3 @@
-
 The MIT License (MIT)
 
 Copyright © 2014 <copyright holders>

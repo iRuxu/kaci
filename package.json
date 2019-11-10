@@ -1,64 +1,35 @@
 {
-  "_from": "kaci",
-  "_id": "kaci@0.0.4",
-  "_inBundle": false,
-  "_integrity": "sha512-WdJzO+BkT6FbtmPh1Zqs9kwRwVPznAZ0z0HaM73ddfGKMjlEf4kAkgDifHHKz4e0ToekPAq18Odbi/N4Klhz0w==",
-  "_location": "/kaci",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "kaci",
+    "bin": {
+        "kaci": "./bin/kaci.js"
+    },
+    "bugs": {
+        "url": "https://github.com/iRuxu/kaci/issues",
+        "email": "rx6@qq.com"
+    },
+    "dependencies": {
+        "chalk": "^2.4.1",
+        "commander": "^2.15.1",
+        "fs-extra": "^6.0.1",
+        "shelljs": "^0.8.2"
+    },
+    "deprecated": false,
+    "description": "Build the front-end project automatically,based on gulp & webpack",
+    "homepage": "http://iruxu.com/kaci/",
+    "keywords": [
+        "gulp",
+        "webpack",
+        "typescript",
+        "babel",
+        "less",
+        "sass",
+        "csslab",
+        "handlebars"
+    ],
+    "main": "./lib/kaci.js",
     "name": "kaci",
-    "escapedName": "kaci",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/kaci/-/kaci-0.0.4.tgz",
-  "_shasum": "d043f8e449a102e1a6d770f9fbe1464f47be6913",
-  "_spec": "kaci",
-  "_where": "F:\\iRuxu\\Test\\kacitest",
-  "bin": {
-    "kaci": "./bin/kaci.js"
-  },
-  "bugs": {
-    "url": "https://github.com/iRuxu/kaci/issues",
-    "email": "rx6@qq.com"
-  },
-  "bundleDependencies": false,
-  "contributors": [
-    "wvv8oo",
-    "huyinghuan"
-  ],
-  "dependencies": {
-    "chalk": "^2.4.1",
-    "commander": "^2.15.1",
-    "fs-extra": "^6.0.1",
-    "shelljs": "^0.8.2"
-  },
-  "deprecated": false,
-  "description": "Build the front-end project automatically",
-  "homepage": "http://iruxu.com/kaci/",
-  "keywords": [
-    "gulp",
-    "webpack",
-    "typescript",
-    "babel",
-    "less",
-    "sass",
-    "csslab",
-    "handlebars"
-  ],
-  "main": "./lib/kaci.js",
-  "name": "kaci",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/iRuxu/kaci.git"
-  },
-  "version": "0.2.2"
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/iRuxu/kaci.git"
+    },
+    "version": "1.0.0"
 }
