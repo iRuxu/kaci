@@ -36,7 +36,7 @@ gulp start          //默认端口：1024
 
 #### **3.打包发布项目**
 ```
-kaci build
+gulp build
 ```
 打包项目（默认方案production）  
 默认方案使用 _kaci.config.js_ 中 **build.production** 的配置。  

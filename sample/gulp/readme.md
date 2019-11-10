@@ -22,7 +22,7 @@ gulp start          //默认端口：1024
 
 # 打包发布
 ```
-kaci build
+gulp build
 ```
 
 # 更多帮助
