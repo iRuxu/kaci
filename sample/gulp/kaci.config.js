@@ -60,6 +60,7 @@ module.exports = {
                 enable: true,   //是否启用相关功能
                 //是否启用webpack打包js模块
                 webpack: true,
+                webpack_ignore: ["lib","module","include","widget"], //忽略被编译（子模块）
                 /*启用webpack时，以下设置不生效，仅webpack.config.js中设置有效
                 当启用自定义方案构建时，其webpack常规配置项会继承production方案（除路径等）*/
                 ignore: ["lib/*","module/*", "include/*"], //忽略被编译（子模块）

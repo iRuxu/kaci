@@ -111,7 +111,7 @@ gulp.task('css',function(done) {
         .pipe(gulp.dest(SCHEME.path));
     }
 
-    LoadFiles(CONF.source.css,"**/*.css",SCHEME.css.ignore)
+    LoadFiles(CONF.source.css,"**/*.css",[])    //css文件不进行忽略，也不进行编译
         .pipe(plumber())
         .pipe(cache("csss"))
         .pipe(autoprefixer(SCHEME.css.autoprefixer))
